@@ -1,17 +1,16 @@
+import React from 'react';
 import './App.css';
 import {useState} from "react";
 import RaspItems from "./components/screens/Home/rasp-items";
+import ScheduleItem from "./components/screens/Home/schedule-item";
+import arrowUp from "./arrow-up.svg";
+import OddSchedule from "./components/screens/Home/oddSchedule";
+
 
 function App() {
-    let days = {
-        1: 'Понедельник',
-        2: 'Вторник',
-        3: 'Среда',
-        4: 'Четверг',
-        5: 'Пятница',
-        6: 'Суббота',
-        7: 'Воскресенье',
-    }
+
+    const days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+    const daysCutted = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
     const schedule = [
         [ // Это чёт. расп.
@@ -24,6 +23,8 @@ function App() {
                 'Элективные курсы по физической культуре и спорту'],
             ['Гуманитарные аспекты информационной безопасности',  'Теоретические основы управления',
                 'Гуманитарные аспекты информационной безопасности','Теоретические основы управления'],
+            ['Пары отсутствуют'],
+            ['Пары отсутствуют'],
         ],
         [ // Это нечёт. расп.
             ['Структуры и алгоритмы обработки данных', 'Теория информации', 'Теория автоматов', 'Теория автоматов'],
@@ -35,6 +36,8 @@ function App() {
                 'Элективные курсы по физической культуре и спорту'],
             ['Гуманитарные аспекты информационной безопасности',  'Теоретические основы управления',
                 'Гуманитарные аспекты информационной безопасности','Теоретические основы управления'],
+            ['Пары отсутствуют'],
+            ['Пары отсутствуют'],
         ]
     ];
     // 1 - практика ; 0 - лекция
@@ -61,7 +64,7 @@ function App() {
             [
                 ['2-105', 1, 'Глухарев М. Л.', '09:00 — 10:30'],
                 ['7-413', 1, 'Боровских Ю. В.', '10:45 — 12:15'],
-                ['Неизвестно', 0, 'Неизвестно', '13:15 — 14:45']
+                ['Неизвестно', 1, 'Неизвестно', '13:15 — 14:45']
             ],
             [
                 ['2-113', 0, 'Корниенко С. В.', '09:00 — 10:30'],
@@ -69,6 +72,8 @@ function App() {
                 ['2-112', 1, 'Корниенко С. В.', '13:15 — 14:45'],
                 ['2-110', 1, 'Ходаковский В. А.', '15:00 — 16:30']
             ],
+           [['Отсутствует']],
+           [['Отсутствует']],
         ],
        [ // Это нечёт расп.
             [
@@ -92,7 +97,7 @@ function App() {
             [
                 ['2-105', 1, 'Глухарев М. Л.', '09:00 — 10:30'],
                 ['7-413', 1, 'Боровских Ю. В.', '10:45 — 12:15'],
-                ['Неизвестно', 0, 'Неизвестно', '13:15 — 14:45']
+                ['Неизвестно', 1, 'Неизвестно', '13:15 — 14:45']
             ],
             [
                 ['2-113', 0, 'Корниенко С. В.', '09:00 — 10:30'],
@@ -100,26 +105,62 @@ function App() {
                 ['2-112', 1, 'Корниенко С. В.', '13:15 — 14:45'],
                 ['2-110', 1, 'Ходаковский В. А.', '15:00 — 16:30']
             ],
-        ]
+           [['Отсутствует']],
+           [['Отсутствует']],
+       ]
     ]
 
     const currentDate = new Date();
+    let id = 0;
 
-    const [name, setName] = useState('Незнакомец');
     const [dayNumber, setDayNumber] = useState(currentDate.getDay());
     const [weekOdd, setWeekOdd] = useState(Math.round((currentDate.getFullYear() -
             new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getTime())
-        / (1000 * 60 * 60 * 24 * 7)) % 2)
+        / (1000 * 60 * 60 * 24 * 7)) % 2);
     return (
         <div className='screen'>
-            <h1 className='title'>Привет, {name}</h1>
-            <div className='horizontalLine horizontalLine-first'></div>
-            <h2 className='day-title'>{days[dayNumber]}</h2>
-            <h2 className='week-title'>{weekOdd === 0 ? 'Чётная' : 'Нечётная'} неделя</h2>
-            <h3 className='rasp-title'>Твоё расписание</h3>
+            <div className={'flex-group-odd'}>
+                <OddSchedule weekOdd={weekOdd} changeOdd={changeOdd}/>
+                <p className={'group-title'}>КИБ-112</p>
+            </div>
+            <div className='days-flex'>
+                {
+                    daysCutted.map((e, index) => <ScheduleItem key={id++} day={e} isActive={index === dayNumber - 1  ? 'day-active' : ''} changeDay={changeDay}/>)
+                }
+            </div>
             <RaspItems schedule={schedule[weekOdd][dayNumber-1]} scheduleSubInfo={scheduleSubInfo[weekOdd][dayNumber-1]}/>
         </div>
     );
+
+    function changeOdd() {
+        setWeekOdd(  weekOdd === 1 ? 0 : 1);
+    }
+
+    function changeDay(targetElement) {
+        switch (targetElement.target.innerText) {
+            case 'Пн':
+                setDayNumber(1);
+                break;
+            case 'Вт':
+                setDayNumber(2);
+                break;
+            case 'Ср':
+                setDayNumber(3);
+                break;
+            case 'Чт':
+                setDayNumber(4);
+                break;
+            case 'Пт':
+                setDayNumber(5);
+                break;
+            case 'Сб':
+                setDayNumber(6);
+                break;
+            case 'Вс':
+                setDayNumber(7);
+                break;
+        }
+    }
 }
 
 export default App;

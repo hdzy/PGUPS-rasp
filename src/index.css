@@ -13,6 +13,8 @@ body {
     width: 350px;
     margin: 0 auto;
     outline: 1px #4c4947 solid;
+    display: flex;
+    flex-direction: column;
 }
 
 .title {
@@ -69,7 +71,7 @@ body {
     width: 90%;
     min-height: 50px;
     margin: 0 auto 20px auto;
-    background-color:  #6ead3a;
+    background-color:  #da6926;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -77,6 +79,11 @@ body {
     align-items: flex-start;
     transition: height 1s;
 }
+
+.rasp-item-container-practice {
+    background-color: #097074;
+}
+
 
 .flex-in-container {
     display: flex;
@@ -146,4 +153,55 @@ body {
 
 .subinfo-main {
     font-style: italic;
+}
+
+.days-flex {
+    display: flex;
+    justify-content: center;
+    padding: 0 0 30px 0;
+    gap: 4px;
+}
+
+.day-name {
+    font-size: 15px;
+    border: 1px #efedef solid;
+    color: #efedef;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.day-active {
+    background-color: #4c4947;
+}
+
+.flex-group-odd {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 27px;
+    padding-top: 20px;
+}
+
+.oddFlex {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+    padding-left: 27px;
+    padding-bottom: 20px;
+}
+
+.arrowOdd {
+    cursor: pointer;
+}
+
+.oddText {
+    color: #efedef;
+    font-size: 16px;
+}
+
+.group-title {
+    color: #efedef;
+    font-size: 16px;
+    padding-top: 6px;
+    font-family: "Gilroy ExtraBold", sans-serif;
 }
